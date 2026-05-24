@@ -1,6 +1,8 @@
 package com.facens.demo.services;
 
+import com.facens.demo.controller.DTOs.RequisicaoCriarProjeto;
 import com.facens.demo.models.Projeto;
+import com.facens.demo.repositories.EmpresaRepository;
 import com.facens.demo.repositories.ProjetoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,11 +11,35 @@ import java.util.Optional;
 
 @Service
 public class ProjetoService {
+
     @Autowired
     private ProjetoRepository repository;
 
-    public List<Projeto> listarTodos() { return repository.findAll(); }
-    public Optional<Projeto> buscarPorId(String id) { return repository.findById(id); }
-    public Projeto salvar(Projeto projeto) { return repository.save(projeto); }
-    public void deletar(String id) { repository.deleteById(id); }
+    @Autowired
+    private EmpresaRepository empresaRepository;
+
+    public List<Projeto> listarTodos() {
+        return repository.findAll();
+    }
+
+    public Optional<Projeto> buscarPorId(String id) {
+        return repository.findById(id);
+    }
+
+    public Projeto salvar(RequisicaoCriarProjeto projeto) {
+        var empresa = empresaRepository.findById(projeto.idEmpresa())
+                .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
+
+        var novoProjeto = new Projeto();
+        novoProjeto.setEmpresa(empresa);
+        novoProjeto.setTitulo(projeto.titulo());
+        novoProjeto.setDescricao(projeto.descricao());
+        novoProjeto.setLocalizacao(projeto.localizacao());
+
+        return repository.save(novoProjeto);
+    }
+
+    public void deletar(String id) {
+        repository.deleteById(id);
+    }
 }

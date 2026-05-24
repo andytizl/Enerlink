@@ -1,6 +1,7 @@
 package com.facens.demo.controller;
 
-import com.facens.demo.models.Consultor;
+import com.facens.demo.controller.DTOs.RequisicaoCriarConsultor;
+import com.facens.demo.controller.DTOs.RespostaDadosConsultor;
 import com.facens.demo.services.ConsultorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +16,38 @@ public class ConsultorController {
     private ConsultorService service;
 
     @GetMapping
-    public List<Consultor> listar() { return service.listarTodos(); }
+    public ResponseEntity<List<RespostaDadosConsultor>> listar() {
+        return ResponseEntity.ok(service.listarTodos().stream()
+                .map(consultor -> new RespostaDadosConsultor(
+                        consultor.getId(),
+                        consultor.getUsuario().getId(),
+                        consultor.getEspecialidade(),
+                        consultor.getAvaliacaoMedia().toString()
+                ))
+                .toList());
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Consultor> buscar(@PathVariable String id) {
-        return service.buscarPorId(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<RespostaDadosConsultor> buscar(@PathVariable String id) {
+        return service.buscarPorId(id).map(consultor -> new RespostaDadosConsultor(
+                consultor.getId(),
+                consultor.getUsuario().getId(),
+                consultor.getEspecialidade(),
+                consultor.getAvaliacaoMedia().toString()
+        )).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Consultor criar(@RequestBody Consultor consultor) { return service.salvar(consultor); }
+    public ResponseEntity<RespostaDadosConsultor> criar(@RequestBody RequisicaoCriarConsultor consultor) {
+        var resposta = service.salvar(consultor);
+
+        return ResponseEntity.ok(new RespostaDadosConsultor(
+                resposta.getId(),
+                resposta.getUsuario().getId(),
+                resposta.getEspecialidade(),
+                resposta.getAvaliacaoMedia().toString()
+        ));
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable String id) {

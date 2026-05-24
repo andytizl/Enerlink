@@ -24,7 +24,7 @@ CREATE TABLE Consultores (
     usuario_id VARCHAR(36) NOT NULL,
     cpf VARCHAR(14) UNIQUE NOT NULL,
     especialidade VARCHAR(100),
-    avaliacao_media DECIMAL(3, 2) DEFAULT 0.00,
+    avaliacao_media DECIMAL(5, 2) DEFAULT 0.00,
     FOREIGN KEY (usuario_id) REFERENCES Usuarios(id) ON DELETE CASCADE
 );
 

@@ -26,6 +26,6 @@ public class Consultor {
     @Column(length = 100)
     private String especialidade;
 
-    @Column(name = "avaliacao_media", precision = 3, scale = 2)
+    @Column(name = "avaliacao_media", precision = 5, scale = 2)
     private BigDecimal avaliacaoMedia = BigDecimal.ZERO;
 }
