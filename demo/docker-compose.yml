@@ -10,3 +10,19 @@ services:
       - "3306:3306"
     volumes:
       - ./init:/docker-entrypoint-initdb.d
+
+  api:
+    build: . # Diz para o Docker procurar o Dockerfile na mesma pasta
+    container_name: api-enerlink
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db # Garante que o banco suba antes da API
+    environment:
+      # Sobrescreve as configurações do application.properties para usar o Docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/ENERLINK?useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=true
