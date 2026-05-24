@@ -16,7 +16,7 @@ Este repositório contém o código-fonte do **Back-end** da aplicação, desenv
 * **Documentação Interativa:** Swagger UI / Springdoc OpenAPI
 * **Produtividade:** Lombok
 
-## ⚙️ Instruções para Execução Local (Via Docker Compose)
+## Instruções para Execução Local (Via Docker Compose)
 
 Com a inclusão do ambiente contentorizado, já não é necessário configurar o banco de dados local manualmente ou compilar o projeto através da IDE. Todo o ecossistema (API Spring Boot + Banco de Dados MySQL) é construído e iniciado automaticamente.
 
