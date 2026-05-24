@@ -1,0 +1,12 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql-enerlink
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: ENERLINK
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
