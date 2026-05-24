@@ -3,8 +3,12 @@ services:
     image: mysql:8.0
     container_name: mysql-enerlink
     restart: always
+    env_file:
+      - .env
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ENERLINK
     ports:
       - "3306:3306"
